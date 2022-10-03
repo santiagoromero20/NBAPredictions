@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -83,52 +84,54 @@ def encoding(dataframe, categorical_features):
 
 #SCALING
 
-def scaling(dataframe, dataframe1):
-  scaler = StandardScaler()
-  
-  new_features = dataframe.columns
-  dataframe[new_features] = scaler.fit_transform(dataframe[new_features])
+def scaling(X_train, X_test):
 
-  new_features_1 = dataframe1.columns
-  dataframe1[new_features_1] = scaler.transform(dataframe1[new_features_1])
+  scaler = StandardScaler()
+  columns = X_train.columns
   
-  return dataframe, dataframe1
+  X_train[columns] = scaler.fit_transform(X_train[columns])
+  X_test[columns] = scaler.transform(X_test[columns])
+  
+  return X_train, X_test
 
 
 
 """Data Preprocessinf Function. This should be called when all the previous analysis (TSNE, Imbalanced Correction, Anomalys Detection) have been done. 
-This return you the Training and Test Dataset preprocessed ready to be use for evaluate the Performance of some Models """
+This return you the Training and Test Dataset preprocessed ready to be use for evaluate the Performance of some Models"""
 
-def data_preprocessing(train, test, numerical_features, categorical_features, all_features):
-  #Correct Outliers
-  numerical_features.remove("SALARY")
-  train = detecting_filling(train, numerical_features)
-  test  = detecting_filling(test, numerical_features)
+def data_preprocessing(data, numerical_features, categorical_features, all_features):
 
-  #Impute values for all columns missing data
-  train = imputing_missingdata(train, all_features, numerical_features, categorical_features)
-  test  = imputing_missingdata(test, all_features, numerical_features, categorical_features)
+    #Correct Outliers
+    data = detecting_filling(data, numerical_features)
 
-  #Encode categorical features
-  train = encoding(train, categorical_features)
-  test  = encoding(test, categorical_features)
+    #Impute values for all columns missing data
+    data = imputing_missingdata(data, all_features, numerical_features, categorical_features)
 
-  #Alignating Columns
-  train, test = train.align(test, join = 'inner', axis = 1)
+    #Splitting the Dataset
+    X = data.drop(['SALARY'], axis=1)
+    y = data["SALARY"]
+    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.33, random_state=1, shuffle=True)
+
+    #Encode categorical features
+    X_train = encoding(X_train, categorical_features)
+    X_test  = encoding(X_test, categorical_features)
+
+    #Alignating Columns
+    X_train, X_test = X_train.align(X_test, join = 'inner', axis = 1)
   
-  #Feature Scaling
-  if len(train.columns) == len(test.columns):
-    train, test = scaling(train, test)
-  else:
-    A = set(train.columns)
-    B = set(test.columns)
-    if len(A) > len(B):
-      C = A.intersection(B)
-      D = A - C 
-      print("You should add this columns to the test Dataframe:",D)
-    elif len(B) > len(A):
-      C = A.intersection(B)
-      D = B - C
-      print("You should add this columns Train Dataframe:",D)
+    #Feature Scaling
+    if len(X_train.columns) == len(X_test.columns):
+        X_train, X_test = scaling(X_train, X_test)
+    else:
+        A = set(X_train.columns)
+        B = set(X_test.columns)
+        if len(A) > len(B):
+            C = A.intersection(B)
+            D = A - C 
+            print("You should add this columns to the test Dataframe:",D)
+        elif len(B) > len(A):
+            C = A.intersection(B)
+            D = B - C
+            print("You should add this columns Train Dataframe:",D)
 
-  return train, test
+    return X_train, X_test, y_train, y_test
