@@ -5,6 +5,8 @@ import statistics
 import warnings
 warnings.filterwarnings("ignore")
 
+#---------------------------------------------DESCRIPTIVE STATISTICS---------------------------------------------#
+
 """Auxiliaries"""
 
 def cat_vs_num(data):
@@ -107,3 +109,13 @@ def fts_correlation_y(data, y):
             print("Correlation between",str(num[i]),"and the label is uncalculable")
 
         print("Correlation between",str(num[i]),"and the label is", c)
+
+
+#---------------------------------------------MODEL EVALUATION---------------------------------------------#
+
+"""Auxiliaries"""
+
+def calculating_error(dict, key_error):
+    error_array = dict[str(key_error)]*(-1)
+    error = np.mean(error_array)
+    return error
