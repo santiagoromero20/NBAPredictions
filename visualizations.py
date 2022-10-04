@@ -5,6 +5,9 @@ from matplotlib import pyplot
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 
+
+#---------------------------------------------DESCRIPTIVE STATISTICS---------------------------------------------#
+
 def hist_all_features(data):
     data_part = data.sample(frac = 0.6, random_state = 1)
     data_part.hist(figsize = (20, 20))
@@ -42,3 +45,18 @@ def boxplot_all_features(data):
     fig, ax = pyplot.subplots(figsize=(20,10))
     sns.boxplot(ax= ax, data=scaled_num_data,).set(title="Box Plots of all Numerical Features")
     plt.show()
+
+#---------------------------------------------MODEL EVALUATION---------------------------------------------#
+
+def plot_learning_curve(train_sizes, train_scores, validation_scores, ylabel, xlabel, title):
+
+    train_scores_mean = -train_scores.mean(axis = 1)
+    validation_scores_mean = -validation_scores.mean(axis = 1)
+
+    plt.style.use('seaborn')
+    plt.plot(train_sizes, train_scores_mean, color="blue",label = 'Training error')
+    plt.plot(train_sizes, validation_scores_mean, color="green",label = 'Validation error')
+    plt.ylabel(str(ylabel), fontsize = 14)
+    plt.xlabel(str(xlabel), fontsize = 14)
+    plt.title(str(title), fontsize = 18, y = 1.03)
+    plt.legend()
