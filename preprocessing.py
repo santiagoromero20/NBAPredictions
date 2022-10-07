@@ -96,8 +96,7 @@ def scaling(X_train, X_test):
 
 
 
-"""Data Preprocessinf Function. This should be called when all the previous analysis (TSNE, Imbalanced Correction, Anomalys Detection) have been done. 
-This return you the Training and Test Dataset preprocessed ready to be use for evaluate the Performance of some Models"""
+"""Data Preprocessinf Function. This return you the Training and Test Dataset preprocessed ready to be use for evaluate the Performance of some Models"""
 
 def data_preprocessing(data, numerical_features, categorical_features, all_features):
 
