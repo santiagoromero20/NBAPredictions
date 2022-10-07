@@ -119,3 +119,12 @@ def calculating_error(dict, key_error):
     error_array = dict[str(key_error)]*(-1)
     error = np.mean(error_array)
     return error
+
+def get_errors(grid_results):
+    results = pd.DataFrame.from_dict(grid_results)
+    results = results.sort_values(by=["mean_test_score"], ascending=False)
+    results = results.head().reset_index()
+    error_cv = -results.loc[0, "mean_test_score"]
+    error_tr = -results.loc[0, "mean_train_score"]
+    print(f"Training RMSE Error {error_tr:0.2f}, CV RMSE Error {error_cv:0.2f}")
+    print('Train/Validation: {}'.format(round(error_cv/error_tr, 1)))
