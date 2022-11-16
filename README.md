@@ -1,11 +1,13 @@
-# NBA Predictions
+# **NBA Predictions**
 
 In this project I trained a model capable of estimate a player salary for the next season.
-## Motivation
+
+![Alt ](img/vivora.jpeg "Title")
+## **Motivation**
 
 On a previous project I have collected and cleaned the data. Now is time to take it into action and use it to train some models. The big question was, which question should I try to answer? After a time of talking it with some fellows and teammates, I decided the one I previously mentioned.
 
-## Table of Contents
+## **Table of Contents**
 
 **[1. NBA Predictions](#heading--1)**
 
@@ -30,7 +32,7 @@ On a previous project I have collected and cleaned the data. Now is time to take
         * [1.4.2.2 GridSearchCV](#heading--2-1-1)
 
 
-## Technologies and Teachings
+## **Technologies and Teachings**
 
 There were a lot of key aspects and concepts from everyday ML projects that I learned from this one. 
 
